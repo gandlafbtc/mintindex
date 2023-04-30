@@ -5,20 +5,22 @@ import type { PageServerLoad } from "./$types";
 import { mintExists, validateMintUrl } from "../util/util";
 
 export const load: PageServerLoad = async () => {
-    return {mints: await prisma.mint.findMany()}
+    return { mints: await prisma.mint.findMany() }
 };
-
-
 
 export const actions: Actions = {
     createMint: async ({ request }) => {
         const { url } = Object.fromEntries(await request.formData()) as { url: string }
 
-        if(!validateMintUrl(url)){
+        if (!validateMintUrl(url)) {
             return fail(400, { message: 'Mint url not valid' })
         }
 
-        if(await mintExists(url)){
+        if (!(await canLoadKeys(url))) {
+            return fail(400, { message: 'Mint url not valid. could not load keys' })
+        }
+
+        if (await mintExists(url)) {
             return fail(400, { message: 'Mint already' })
         }
 
@@ -34,17 +36,32 @@ export const actions: Actions = {
             status: 201
         }
     },
-    deleteMint:async ({url}) => {
-        const id  = url.searchParams.get('id')
+
+    deleteMint: async ({ url }) => {
+        const id = url.searchParams.get('id')
         if (!id) {
             return fail(400, { message: 'no mint id specified' })
         }
 
         try {
-            await prisma.mint.delete({where: {id: Number(id)}})
+            await prisma.mint.delete({ where: { id: Number(id) } })
         } catch (err) {
             console.error(err)
             return fail(500, { message: 'could not delete mint item' })
         }
     }
 };
+
+const canLoadKeys = async (url: string): Promise<boolean> => {
+    try {
+        const response = await fetch(url + "/keys")
+        const keys = await response.json()
+        if (!keys) {
+            return false
+        }
+        return true
+    } catch (error) {
+        console.error(error, 'could not fetch keys from mint host: ' + url)
+        return false
+    }
+}
