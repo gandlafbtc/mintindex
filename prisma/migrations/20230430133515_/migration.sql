@@ -1,0 +1,22 @@
+-- CreateTable
+CREATE TABLE "Mint" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "url" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Token" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "token" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Uptime" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "date" DATETIME NOT NULL,
+    "mintId" INTEGER NOT NULL,
+    CONSTRAINT "Uptime_mintId_fkey" FOREIGN KEY ("mintId") REFERENCES "Mint" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Mint_url_key" ON "Mint"("url");

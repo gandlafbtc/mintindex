@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Mint } from '../model/model';
+	import type { Mint } from "@prisma/client";
 	import MintAvatar from './MintAvatar.svelte';
 	import MintUptime from './MintUptime.svelte';
 

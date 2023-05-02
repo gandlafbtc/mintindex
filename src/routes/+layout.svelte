@@ -3,6 +3,7 @@
 	import 'nprogress/nprogress.css';
 	import nprogress from 'nprogress';
 	import { navigating } from '$app/stores';
+	import Toasts from '../comp/Toasts.svelte';
 
 	navigating.subscribe((value)=>{
     if (value) {
@@ -18,3 +19,5 @@
 	<h1 class="text-4xl">MINTINDEX - Find a cashu mint</h1>
 	<slot />
 </div>
+
+<Toasts></Toasts>

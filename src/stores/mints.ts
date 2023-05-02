@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import type { Mint } from "../model/Mint";
+import type { Mint } from "@prisma/client";
 
 const mints = writable<Mint[]>([])
 

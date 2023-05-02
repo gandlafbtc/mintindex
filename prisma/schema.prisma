@@ -14,4 +14,16 @@ datasource db {
 model Mint {
   id Int @id @default(autoincrement())
   url String @unique
+  uptime Uptime[]
+}
+model Uptime {
+  id Int @id @default(autoincrement())
+  date DateTime
+  isUp Boolean
+  mint Mint @relation(fields: [mintId], references: [id], onDelete: Cascade)
+  mintId Int
+}
+model CashuToken {
+  id Int @id @default(autoincrement())
+  token String
 }
