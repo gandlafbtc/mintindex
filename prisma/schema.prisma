@@ -7,19 +7,34 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.sqlite"
+  url      = env("DATABASE_URL")
 }
 
 
 model Mint {
   id Int @id @default(autoincrement())
   url String @unique
+  date DateTime
+  rank Int
   uptime Uptime[]
+  rating Rating[]
+  
 }
 model Uptime {
   id Int @id @default(autoincrement())
   date DateTime
   isUp Boolean
+  mint Mint @relation(fields: [mintId], references: [id], onDelete: Cascade)
+  mintId Int
+}
+
+model Rating {
+  id Int @id @default(autoincrement())
+  date DateTime
+  points Int
+  weight Int
+  details String
+  author String
   mint Mint @relation(fields: [mintId], references: [id], onDelete: Cascade)
   mintId Int
 }

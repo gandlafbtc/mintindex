@@ -4,8 +4,25 @@ import { prisma } from "../lib/server/prisma";
 import type { PageServerLoad } from "./$types";
 import { claimToken, mintExists, validateMintUrl } from "../util/util";
 
-export const load: PageServerLoad = async () => {
-    return { mints: await prisma.mint.findMany({ include: { uptime: true } }) }
+export const load: PageServerLoad = async ({ url }) => {
+    const cursorParam = url.searchParams.get("cursor")
+    const filter = url.searchParams.get("filter")
+
+    await prisma.mint.findMany({ take: 10, orderBy: { id: 'asc' }, include: { uptime: true, rating: {select: {weight: true, points: true}} } })
+    const query: any ={ take: 10, orderBy: { id: 'asc' }, include: { uptime: true, rating: {select: {weight: true, points: true}} } }
+
+    const cursor = cursorParam ? +cursorParam : undefined
+    if (cursor) {
+        query.skip = 1
+        query.cursor = { id: cursor }
+    }
+    if (filter) {
+        query.where = { url: { contains: filter } }
+    }
+
+    const mints = await prisma.mint.findMany(query)
+    return { mints }
+
 };
 
 export const actions: Actions = {
@@ -24,13 +41,12 @@ export const actions: Actions = {
             return fail(400, { message: 'Mint already exists' })
         }
 
-        if (!(await claimToken(token, 21))) {
+        if (!(await claimToken(token, 16))) {
             return fail(400, { message: 'provided invalid or not enough ecash' })
         }
         let id
         try {
-            const mint = await prisma.mint.create({ data: { url } })
-            console.log(mint)
+            const mint = await prisma.mint.create({ data: { url, rank: 1, date: new Date() } })
             id = mint.id
         }
         catch (err) {
@@ -50,7 +66,7 @@ export const actions: Actions = {
         if (!id) {
             return fail(400, { message: 'no mint id specified' })
         }
-        if (!(await claimToken(token, 210))) {
+        if (!(await claimToken(token, 65536))) {
             return fail(400, { message: 'provided invalid or not enough ecash' })
         }
         try {

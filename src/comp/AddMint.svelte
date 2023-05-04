@@ -31,7 +31,7 @@
 		isModalOpen = false;
 		goto('/mint/'+id)
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			toast('error', 'unexpected Error', 'could not add mint');
 		
 	}finally{
@@ -44,7 +44,7 @@
 </script>
 
 <div class="flex gap-2 items-center">
-	<input bind:value={mintURL} type="text" class="input input-secondary" />
+	<input bind:value={mintURL} type="text" class="input input-secondary w-full" />
 
 	<label for="add-mint-modal" class="btn {mintURL ? 'btn-secondary' : 'btn-disabled'}"
 		>Add a mint</label

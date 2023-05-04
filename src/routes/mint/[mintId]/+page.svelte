@@ -1,4 +1,6 @@
+
 <script lang="ts">
+	import Ratings from "../../../comp/Ratings.svelte";
 	import { onMount } from 'svelte';
 	import AddToWalletButtons from '../../../comp/AddToWalletButtons.svelte';
 	import MintUptime from '../../../comp/MintUptime.svelte';
@@ -8,6 +10,7 @@
 	import nProgress from 'nprogress';
 	import { toast } from '../../../stores/toasts';
 	import { goto } from '$app/navigation';
+	import Rating from '../../../comp/Rating.svelte';
 	export let data;
 
 	let isLoading = false;
@@ -32,7 +35,6 @@
 				})
 			});
 			const json = await res.json();
-			console.log(json)
 			if (json.status >= 400) {
 				toast('error', json.data, 'could not delete mint');
 				return;
@@ -49,6 +51,7 @@
 		}
 		
 	};
+	
 </script>
 
 <a href="/" class="btn btn-circle btn-xl btn-secondary">
@@ -73,20 +76,34 @@
 			<MintAvatar {mint} />
 			<div class="flex flex-col gap-2">
 				<h2 class="card-title break-all">{mint?.url}</h2>
-				<MintUptime {mint} />
+				<!-- <MintUptime {mint} /> -->
 			</div>
 		</div>
 
 		{#if info.pubkey}
-			<div class="divider" />
+			<div class="divider">Info</div>
 
 			<MintInfo {info} />
 		{/if}
+
+		<div class="divider">Ratings</div>
+		<div class="flex flex-col items-center gap-5">
+			
+			<div class="flex w-full items-center">
+				<Rating rating={data.mint?.rating}></Rating>
+				<a href="/mint/{mint?.id}/rate" class="btn btn-secondary btn-sm">rate</a>
+			</div>
+			
+			<Ratings ratings={mint?.rating??[]}/>
+			
+		</div>
+
 
 		<div class="divider" />
 
 		<div class="card-actions justify-between items-center">
 			<AddToWalletButtons {mint} />
+			
 			<label for="delete-mint-modal" class="btn btn-error">Delete</label>
 		</div>
 	</div>
@@ -97,7 +114,7 @@
 	<div class="modal-box">
 		<h3 class="font-bold text-lg">Deleting a mint is a Nuttable offense!</h3>
 		<p class="py-4">
-			it will cost you <span class="text-secondary"> 210 nuts </span> from the mint:
+			it will cost you <span class="text-secondary"> 65536 nuts </span> from the mint:
 			<a
 				class="link link-secondary text-sm"
 				href="https://wallet.nutstash.app/?mint=https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC"
