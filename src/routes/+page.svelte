@@ -11,7 +11,7 @@
 
 
 	previous.set($current < $previous ? $current : $previous);
-	if (data.mints) {
+	if (data.mints?.length) {
 		current.set(data.mints[data.mints.length - 1].id);
 	}
 

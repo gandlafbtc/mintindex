@@ -15,7 +15,7 @@ export const actions: Actions = {
         const mintId: number = +params.mintId
 
         const data = await request.json()
-        if (!(await claimToken(nut, 4))) {
+        if (!(await claimToken(data.nut, 4))) {
              return fail(400, { message: 'provided invalid or not enough ecash' })
         }
         

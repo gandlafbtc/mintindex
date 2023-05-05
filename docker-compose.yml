@@ -4,17 +4,29 @@ services:
   web:
     build: .
     ports:
-      - "3000:3000"
+      - "4173:4173"
+    networks:
+      - mintindex-network
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/mintindex
+      DATABASE_URL: postgres://postgres:WFRbcLQ3Gwkn4yo6B98C@db:5432/mintindex
   db:
     image: postgres
     restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: WFRbcLQ3Gwkn4yo6B98C
       POSTGRES_DB: mintindex
     ports:
       - "5432:5432"
+    networks:
+      - mintindex-network
+
+networks:
+  mintindex-network:
+    driver: bridge
+volumes:
+  db-data:

@@ -1,17 +1,15 @@
-FROM node:alpine as build
-WORKDIR /nutstash
+FROM node:20 as build
+WORKDIR /mintindex
 COPY . .
 
 RUN npm i
+RUN npm i -g vite
 RUN npm run build
+CMD [ "/bin/sh", "./docker-startup.sh" ]
+# FROM node:20 as prod
+# # WORKDIR /app
 
-FROM node:alpine as prod
-# WORKDIR /app
-COPY ./package*.json ./
-RUN npm ci --production --silent --ignore-scripts
-COPY --from=build /nutstash/build ./build
-COPY --from=build /nutstash/docker-startup.sh ./build
-
-EXPOSE 3000/tcp
-USER node
-CMD [ "/bin/sh", "build/docker-startup.sh" ]
+# COPY --from=build /mintindex/build ./build
+# RUN npm i -g vite
+# EXPOSE 4173/tcp
+# USER node
