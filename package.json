@@ -39,7 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@cashu/cashu-ts": "^0.7.0",
+		"@cashu/cashu-ts": "0.8.0-rc.2",
 		"@prisma/client": "^4.13.0"
 	}
 }
