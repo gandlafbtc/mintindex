@@ -2,7 +2,8 @@ import { fail, type Actions } from "@sveltejs/kit";
 
 import { prisma } from "../lib/server/prisma";
 import type { PageServerLoad } from "./$types";
-import { claimToken, mintExists, validateMintUrl } from "../util/util";
+import { validateMintUrl } from "../util/util";
+import { claimToken, mintExists } from "../util/util.server";
 
 export const load: PageServerLoad = async ({ url }) => {
     const cursorParam = url.searchParams.get("cursor")

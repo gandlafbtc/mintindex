@@ -1,6 +1,5 @@
 <script lang="ts">
 	import nProgress from 'nprogress';
-	import AddMint from '../../../../comp/AddMint.svelte';
 	import { toast } from '../../../../stores/toasts';
 	import { goto } from '$app/navigation';
 
