@@ -1,6 +1,7 @@
 import { CashuMint, CashuWallet, getDecodedToken, getEncodedToken, type Proof, type TokenEntry } from "@cashu/cashu-ts"
 import { prisma } from "../lib/server/prisma";
 import { getAmountForTokenSet } from "./util";
+import { MINT_ADDRESS } from "./const";
 
 export const mintExists = async (url: string): Promise<boolean>=> {
     if(await prisma.mint.findFirst({where:{url: String(url)}})){
@@ -11,13 +12,13 @@ export const mintExists = async (url: string): Promise<boolean>=> {
 }
 
 export const claimToken = async (tokenString: string, minAmount: number): Promise<boolean> => {
-    const mintUrl = "https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC"
+    
     try {
         if (!tokenString.startsWith('cashu')) {
             return false
         }
-        const cashWallet = new CashuWallet(new CashuMint(mintUrl))
-        const tokenFromMint = getDecodedToken(tokenString)?.token?.find(t=>t.mint===mintUrl)??{proofs:[], mint:mintUrl}
+        const cashWallet = new CashuWallet(new CashuMint(MINT_ADDRESS))
+        const tokenFromMint = getDecodedToken(tokenString)?.token?.find(t=>t.mint===MINT_ADDRESS)??{proofs:[], mint:MINT_ADDRESS}
         
         const { token, tokensWithErrors } = await cashWallet.receive(getEncodedToken( {token:[tokenFromMint]}))
         const amountReceived = getAmountForTokenSet(tokenFromMint?.proofs??[])

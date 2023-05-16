@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
+	import { MINT_ADDRESS } from '../util/const';
 
 	let mintURL = '';
 	let token = '';
@@ -58,9 +59,9 @@
 		<p class="py-4">
 			it will cost you <span class="text-secondary">21 nuts</span>  from the mint:
 			<a class="link link-secondary text-sm"
-				href="https://wallet.nutstash.app/?mint=https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC"
+				href="https://wallet.nutstash.app/?mint={MINT_ADDRESS}"
 				target="_blank"
-				rel="noopener noreferrer">https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC</a
+				rel="noopener noreferrer">{MINT_ADDRESS}</a
 			>
 		</p>
 		<div class="flex gap-2 items-center">

@@ -1,0 +1,1 @@
+export const MINT_ADDRESS = 'https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC'

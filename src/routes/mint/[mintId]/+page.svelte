@@ -11,6 +11,7 @@
 	import { toast } from '../../../stores/toasts';
 	import { goto } from '$app/navigation';
 	import Rating from '../../../comp/Rating.svelte';
+	import { MINT_ADDRESS } from "../../../util/const";
 	export let data;
 
 	let isLoading = false;
@@ -117,9 +118,9 @@
 			it will cost you <span class="text-secondary"> 65536 nuts </span> from the mint:
 			<a
 				class="link link-secondary text-sm"
-				href="https://wallet.nutstash.app/?mint=https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC"
+				href="https://wallet.nutstash.app/?mint={MINT_ADDRESS}"
 				target="_blank"
-				rel="noopener noreferrer">https://legend.lnbits.com/cashu/api/v1/4gr9Xcmz3XEkUNwiBiQGoC</a
+				rel="noopener noreferrer">{MINT_ADDRESS}</a
 			>
 		</p>
 		<div class="flex gap-2 items-center">
